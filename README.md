@@ -1,5 +1,7 @@
 # INS-Transition
 
+![](./output.webp)
+
 ## 简介
 
 这是一个为 Python 对象提供 CSS 风格过渡（transition）功能的轻量级库。你可以定义多个**状态（state）**，每个状态为对象的属性指定目标值和过渡配置（ 持续时间、延迟、缓动函数），然后通过 `TransitionGroup` 在状态之间切换，实现属性的平滑过渡。其行为模仿了 Web 前端中 **CSS Transition** 的特性，包括**反转缩短（reverse shortening）**
