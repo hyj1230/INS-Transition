@@ -1,9 +1,5 @@
 import math
 import sys
-import numpy as np
-
-
-np.seterr(divide='ignore')
 
 
 kMaxNewtonIterations = 4  # 最大牛顿迭代次数
@@ -18,7 +14,15 @@ def clamp(x, _min, _max):
 
 
 def my_divide(a, b):
-    return np.divide(a, b)
+    try:
+        return a / b
+    except ZeroDivisionError:
+        if a > 0:
+            return float('inf')
+        elif a < 0:
+            return float('-inf')
+        else:
+            return float('nan')
 
 
 class CubicBezier:
