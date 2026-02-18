@@ -179,6 +179,62 @@ def lerp_color(t: float, color1: pygame.Color, color2: pygame.Color):
 - `property`：字典，`{属性名: Property对象}`。
 - `states`：字典，`{状态名: State对象}`。
 
+## 快速使用
+
+按照以下四个步骤，你可以快速上手使用 INS-Transition 实现属性平滑过渡：
+
+1. **选定需要应用过渡的属性**
+   确定你想要实现动画效果的对象属性，例如位置（`x`, `y`）、尺寸（`width`, `height`）、颜色（`color`）等。这些属性将作为过渡的目标。
+
+2. **设定 `'default'` 状态**
+   创建一个 `State` 对象作为默认状态，为每个属性指定初始值。
+
+   ```python
+   default = State.create(
+       x=(0, TransitionData('1s')),
+       y=(0, TransitionData('1s'))
+   )
+   ```
+
+   这类似于以下 CSS 代码：
+   ```css
+   .box {
+       transform: translate(0px, 0px);
+       transition: transform 1s ease;
+   }
+   ```
+
+4. **设定其他状态**
+   根据需要创建其他状态（如 `'hover'`、`'active'`）
+
+   ```python
+   hover = State.create(
+       x=(100, TransitionData('0.5s', ease_out)),
+       y=(200, TransitionData('0.5s', ease_out))
+   )
+   ```
+
+   这类似于以下 CSS 代码：
+   ```css
+   .box:hover {
+       transform: translate(100px, 200px);
+       transition: transform 0.5s ease-out;
+   }
+   ```
+
+5. **主循环中执行 `update()` 方法**
+   将对象和状态绑定到 `TransitionGroup`，并在每一帧（如游戏循环）中调用其 `update()` 方法。切换状态时使用 `set_state()`，`update()` 会自动计算并更新对象的属性值。
+
+   ```python
+   group = TransitionGroup(my_object, default, hover=hover)
+
+   while running:  # 主循环
+       group.update()  # 每帧调用，更新属性
+       # 渲染对象...
+       if 条件满足:
+           group.set_state('hover')  # 切换到 hover 状态
+   ```
+
 ## 完整示例
 
 下面是一个更完整的示例，你也可以查看 `slider_test.py` 这个更复杂的示例
